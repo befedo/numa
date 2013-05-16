@@ -1,0 +1,50 @@
+\chapter{Nachweis der hermiteschen Form von \emph{H}}
+Eine hermitesche Matrix oder selbstadjungierte Matrix wird im mathematischen Teilgebiet der Linearen
+Algebra untersucht. Es handelt sich um eine spezielle Art von quadratischen Matrizen. Benannt sind
+diese nach dem Mathematiker Charles Hermite\footnote{Charles Hermite (* 24. Dezember 1822 in Dieuze
+(Lothringen); † 14. Januar 1901 in Paris) war ein französischer Mathematiker.}.
+
+\section{Definition - hermitesch}
+Eine \(n \times n\)-Matrix \(A\) mit Einträgen in \(\mathrm{C}\) heißt hermitesch, wenn sie mit
+ihrer (hermitesch) Adjungierten \(A^*\), also der transponierten und komplex konjugierten Matrix
+übereinstimmt. Das heißt, wenn
+\begin{equation}
+    A = A^* = \overline A^{\mathrm T} = \overline{A^{\mathrm T}}
+\end{equation}
+gilt.
+
+Für die adjungierte Matrix finden sich auch die Bezeichnungen \(A^\dagger\) und \(A^{\mathrm H}\).
+Die Schreibweise \(A^*\) wird auch für die komplex konjugierte Matrix verwendet.
+
+Für die Einträge einer hermiteschen Matrix gilt also:
+\begin{equation}
+\label{eq:elements}
+    a_{jk} = \overline{a_{kj}}
+\end{equation}
+Anders formuliert ist eine Matrix A genau dann hermitesch, wenn ihre Transponierte gleich ihrer
+komplex Konjugierten ist, d.h. \(A^{\mathrm T} = \overline A\).
+
+\subsection{direkte Folgen aus der Definition}
+\begin{itemize}
+  \label{item:hermSym}
+  \item Der Realteil einer hermiteschen Matrix ist symmetrisch, \(\mathrm{Re}(a_{jk}) =
+        \mathrm{Re}(a_{kj})\), der Imaginärteil ist schiefsymmetrisch, \(\mathrm{Im}(a_{jk}) =
+        -\mathrm{Im}(a_{kj})\).
+  \item Ist \(A\) hermitesch, dann ist \(iA\) schiefhermitesch.
+  \item Die Hauptdiagonalelemente einer hermiteschen Matrix sind reell.  
+  \item Für reelle Matrizen fallen die Begriffe hermitesch und symmetrisch zusammen.
+  \item Hermitesche Matrizen sind normal, d. h \(A^* \cdot A = A\cdot A^*\)
+\end{itemize}
+
+\section{Mathematischer Beweis für die gegebene Matrize 'H'}
+Mit der gegebenen Bildungsvorschrifft
+\begin{equation}
+    H := \left(\frac{1}{j+k+1}\right)_{j,k=0}^{n}
+\end{equation}
+Gleichung \ref{eq:elements} und den Aussagen aus \ref{item:hermSym} folgt, dass für \(H\) der
+folgende Zusammenhang gillt:
+\begin{align}
+                                           H &= H^{\mathrm T} \\
+                                     H_{j,k} &= H_{k,j}       \\
+    \left(\frac{1}{j+k+1}\right)_{j,k=0}^{n} &= \left(\frac{1}{j+k+1}\right)_{k,j=0}^{n}
+\end{align}
