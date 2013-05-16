@@ -1,0 +1,59 @@
+\input{header}
+
+\begin {document}
+	%% Titelseite
+	\pdfbookmark[1]{Titelseite}{titlepage}
+	\input{titlepage}
+
+	%% Inhaltsverzeichnis
+	\newpage
+	\thispagestyle{empty}
+	\null
+
+	\pagenumbering{Roman}
+	\clearpage\setcounter{page}{1}
+
+	\pdfbookmark[1]{Inhaltsverzeichnis}{tableofcontents}
+	\tableofcontents
+	\pagebreak
+	
+	\newpage
+	\thispagestyle{empty}
+	\null	
+
+    \renewcommand{\abstractname}{Abstract}    
+    \begin{abstract}
+        Hier kommt das Geschwafel hin, welches als Einführung in unsere Problemstellung dient.
+    \end{abstract}
+
+    %% Eigentlicher Inhalt
+    \pagenumbering{arabic}
+    \clearpage\setcounter{page}{1}
+
+	\include{kapitel1}
+	%% ...
+
+	%% Beginn vom Anhang
+	\appendix
+	%\pagenumbering{romanian}
+	%\clearpage\setcounter{page}{2}
+
+	%% Glossar
+	\include{glossar}		
+
+	%% Verzeichnisse
+	\newpage
+	\listoffigures
+ 	% \listoftables
+	\lstlistoflistings
+
+	%% Literaturverzeichnis
+	\newpage
+	\bibliographystyle{gerapali}
+	\bibliography{quellen}
+	\nocite{*}
+
+	%% sonstiger Anhang:
+	\include{anhang}
+
+\end{document}

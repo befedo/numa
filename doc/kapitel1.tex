@@ -1,0 +1,82 @@
+\chapter{Entwickle die Funktion \emph{f} aus obigem Problem in eine Taylorreihe}
+
+\section{Die Taylorreihe}
+In der Analysis verwendet man Taylorreihen (auch Taylor-Entwicklungen, nach dem Mathematiker Brook
+Taylor\footnote{Brook Taylor (* 18. August 1685 in Edmonton, Middlesex; † 29. Dezember 1731 in
+Somerset House, London) war ein britischer Mathematiker. Nach ihm wurde u.a. die Taylorreihe
+benannt.}), um Funktionen in der Umgebung bestimmter Punkte durch Potenzreihen darzustellen
+(Reihenentwicklung). So kann ein komplizierter analytischer Ausdruck durch eine nach wenigen
+Gliedern abgebrochene Taylorreihe (oftmals gut) angenähert werden, z.B. in der Physik oder bei der
+Ausgleichung geodätischer Netze: So ist die oft verwendete Kleinwinkelnäherung des Sinus eine nach
+dem ersten Glied abgebrochene Taylorreihe dieser Funktion.
+
+\section{Definition}
+Sei \( I \subset \mathrm{R} \) ein offenes Intervall, \( f \colon I \rightarrow \mathrm{R} \) eine
+unendlich oft differenzierbare Funktion und \(a\) ein Element von \(I\). Dann heißt die unendliche
+Reihe
+\begin{align}
+        \label{eq:taylorreihe1}
+P_f(x)  & = f(a) + \frac{f'(a)}{1!} (x-a) + \frac{f''(a)}{2!} (x-a)^2 + \dotsb +
+            \frac{f^{(n)}(a)}{n!} (x-a)^n + \dotsb\\
+        \label{eq:taylorreihe2}
+        & = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
+\end{align}
+die Taylor-Reihe von f mit Entwicklungsstelle a.
+
+Hierbei bezeichnet
+\begin{itemize}
+    \item   \(n!\) die Fakultät \(n! = 1 \cdot 2 \cdot \dots \cdot n\) und
+    \item   \(f^{(n)}(a)\) die n-te Ableitung von \(f\) an der Stelle a, wobei man \(f^{(0)} := f\)
+            setzt.
+\end{itemize}
+
+\section{Eigenschaften}
+Die Taylorreihe \(P_f(x)\) zur Funktion \(f(x)\) ist eine Potenzreihe \(P\) in \(x\). Im Fall einer
+analytischen Funktion \(f\) hat die Taylor-Reihe in jedem Punkt \(a\) einen positiven
+Konvergenzradius \(r\) und stimmt in ihrem Konvergenzbereich mit \(f\) überein, d.h. es gibt ein
+\(r>0\), sodass für \(|x-a|<r\) gilt
+\begin{equation}
+    P_f(x) = \sum_{n=0}^\infty a_n (x-a)^n = f(x)
+\end{equation}.
+Außerdem stimmen die Ableitungen der Reihe im Entwicklungspunkt \(a\) mit den tatsächlichen
+Ableitungswerten überein:
+\begin{equation}
+    P_f^{(k)}(a) = f^{(k)}(a)
+\end{equation}
+.
+    
+\section{Konstruktion}
+Damit die Ableitungen der Reihe im Entwicklungspunkt \(a\) mit den tatsächlichen Ableitungswerten
+übereinstimmen, sind die Koeffizienten \(a_n\) der Taylorreihe wie folgt konstruiert:
+\begin{equation}
+    \label{eq:konstruktion}
+    a_n = \frac{f^{(n)}(a)}{n!} \Rightarrow P_f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
+\end{equation}
+.
+
+\section{Entwicklung von \emph{f(x)} in eine Tylor Reihe}
+Bei gegebener Funktion
+\begin{equation}
+    f\left(x\right) = \frac{1}{1+x}
+\end{equation}
+und den Gleichungen \ref{eq:taylorreihe1} und \ref{eq:taylorreihe2} folgt für deren Ableitungen
+\begin{align}
+    f'\left(x\right)    &= -\frac{1}{\left(1+x\right)^2} \\
+    f''\left(x\right)   &=  \frac{2\left(1+x\right)}{\left(1+x\right)^4}
+                         =  \frac{2}{\left(1+x\right)^3} \\
+    f'''\left(x\right)  &=  \frac{2\left(1+x\right)^4 -8\left(1+x\right)\left(1+x\right)^3}
+                            {\left(1+x\right)^8}
+                         =  -\frac{6}{\left(1+x\right)^4}
+\end{align}
+Hieraus läßt sich folgende Bildungsvorschrifft für eine beliebige Ableitung bestimmen
+\begin{equation}
+    f^n\left(x\right) = \left(-1\right)^n \frac{n!}{\left(1+x\right)^{n+1}}
+\end{equation}
+hieraus folgt nach Gleichung \ref{eq:konstruktion}
+\begin{align}
+    f\left(x\right)  =  P_f\left(x\right) 
+                    &= \sum_{n=0}^{\infty} \left(-1\right)^n
+                        \frac{n!}{n!\left(1+a\right)^{n+1}}\left(x-a\right)^n\\
+                    &=  \sum_{n=0}^{\infty} \left(-1\right)^n
+                        \frac{\left(x-a\right)^n}{\left(1+a\right)^{n+1}}
+\end{align}
