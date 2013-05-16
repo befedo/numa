@@ -1,1 +1,8 @@
+tmp/*
 octave-workspace
+*.glo
+*.ist
+*.lol
+*.nlo
+*.nls
+*.gz
