@@ -13,6 +13,7 @@
 \usepackage[utf8]{inputenc}			% UTF-8 encoding
 \usepackage[ngerman]{babel}			% neue deutsche Rechtschreibung
 \setcounter{secnumdepth}{4}			% 4 Ebenen bei Nummerierung
+\usepackage{pdflscape}
 
 
 %% Header und Footer:
@@ -111,7 +112,6 @@
 \renewcommand*{\lstlistingname}{Quelltext}
 \renewcommand*{\lstlistlistingname}{Quelltextverzeichnis}
 
-
 %% Tikz für (komplizierte) bunte Bildchen:
 \usepackage{tikz}
 \usetikzlibrary{positioning,mindmap,shapes,shapes.multipart,shadows,arrows,patterns,topaths}
@@ -127,7 +127,7 @@
 %% PDF Optionen (verweise und co):
 \usepackage[pdftex, raiselinks, pdfpagelabels, plainpages=false, hypertexnames=false,
             pdfborder=false]{hyperref}
-\pdfcompresslevel=0
+%% \pdfcompresslevel=0
 \hypersetup{
     pdfauthor = {Marc Ludwig, Matthias Springstein},
     pdftitle = {Beleg zum Semesterprojekt - Distanzmessung mittels Ultraschall},
