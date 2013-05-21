@@ -1,0 +1,9 @@
+\chapter{Numerische Lösung des LGS für eine fünfstellige Genauigkeit von R(0)}
+Falls H eine \(n \times n\)-Matrix ist, wird von Octave Gaußelimination verwendet, sonst wird via
+QR-Zerlegung eine Lösung im Sinne der kleinsten Fehlerquadrate berechnet. Ist A schlecht
+konditioniert oder singulär, wird eine Warnung ausgegeben. Um zu zeigen, dass das
+Eliminationsverfahren nach Gauß ungeeignet ist haben wir hierführ eine eigene Funktion gechrieben,
+welche im Listing \ref{code:gauss} zu sehen ist.
+
+\lstset{label=code:gauss, caption=Gauß-Eliminationsverfahren als Matlab-/Octavescript}
+\lstinputlisting{../src/gaussElim.m}
