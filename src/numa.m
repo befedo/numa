@@ -4,11 +4,18 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 	if (isnumeric (N) && is_valid_file_id (fileIdData) && is_valid_file_id (fileIdTask3))
 		clc;
 		N--;
+		taylorsize = 5;
+		entwPkt = 0.5;
+		xmin = -0.5;
+		xmax =  1.5;
+		ymin = -1.0;
+		ymax = 4.0;
 		#
 		# Zähler und Nenner der gegebenen Funktion
 		#
 		numerator = [1];
 		denominator = [1, 1];
+		func = deconv (numerator, denominator);
 		#
 		# Erzeugen der Matrix
 		#
@@ -28,10 +35,13 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 			endfor
 			 R(i+1) = (-1)^i * (log(2) + sum);
 		endfor
+		Rtrim = R;
+		Rtrim(1) = 0.69315;	# 5-Stellen Genauigkeit
 		#
 		# Lösen des LGS
 		#
 		solved = H\R'
+		solvedTrim = gaussElim (H, Rtrim)
 		#
 		# Ausgabe
 		#
@@ -40,8 +50,9 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		commentLine = strcat ("#\n# 'H' Matrix-",  num2str (N+1), "x",  num2str (N+1), "\n#");
 		fdisp (fileIdData, commentLine);
 		fdisp (fileIdData, H);
-		printf ("zugehöriger Lösungsvektor 'r':\n")
+		printf ("zugehörige Lösungsvektoren 'r' und 'rTrim':\n")
 		disp (R)
+		disp (Rtrim)
 		commentLine = "#\n# 'R' Lösungsvektor\n#";
 		fdisp (fileIdData, commentLine);
 		fdisp (fileIdData, R);
@@ -61,6 +72,27 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		fdisp (fileIdTask3, commentLine);
 		fdisp (fileIdTask3, cond);		
 		printf ("\n")
+		#
+		# Berechnen des Taylorpolynoms
+		#
+		xval = [-0.5:0.01:1.5];
+		taylor = zeros (1, size (xval, 2));
+		for i = 1:size (xval, 2)
+			for n = 0:taylorsize
+				taylor(i) += (-1)^n * ( (xval(i)-entwPkt)^n / ((1+entwPkt)^(n+1)) );
+			endfor
+		endfor
+		#
+		# Plot des Polynoms
+		#		
+		solved = solved(end:-1:1);	# Potenzen umsortieren
+		solvedTrim = solvedTrim(end:-1:1);
+		# berechne die ursprüngliche Funktion
+		ref = zeros (1, N);
+		for n = 1:size (xval, 2)
+			ref(n) = 1/(1+xval(n));
+		endfor
+		plotPdf (xval, ref, solvedTrim, taylor, xmin, xmax, ymin, ymax);	# Aufruf des externen Plot Scripts
 		#
 		# Return bool 'true'
 		#

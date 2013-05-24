@@ -8,7 +8,7 @@ fileIdTask3 = fopen ('aufgabe3', 'w');
 #
 # Iterationen um 3x3 bis 10x10 Matrizzen zu berechnen
 #
-for i = 3:10
+for i = 10:10
 	if (!numa (i, fileIdData, fileIdTask3))
 		break;
 	endif
