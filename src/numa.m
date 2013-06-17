@@ -2,14 +2,14 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 	retVal = false;			# default Zuweisung
 	
 	if (isnumeric (N) && is_valid_file_id (fileIdData) && is_valid_file_id (fileIdTask3))
-		clc;
 		N--;
-		taylorsize = 5;
-		entwPkt = 0.5;
-		xmin = -0.5;
-		xmax =  1.5;
-		ymin = -1.0;
-		ymax = 4.0;
+		taylorsize = 10;		# Länge des Taylor Polynoms
+		entwPkt = 0.5;			# und dessen Entwicklungspunkt
+		xmin = 0;
+		xmax =  1;
+		xval = [xmin:0.01:xmax];
+		ymin = 0;
+		ymax = 2;
 		#
 		# Zähler und Nenner der gegebenen Funktion
 		#
@@ -35,8 +35,15 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 			endfor
 			 R(i+1) = (-1)^i * (log(2) + sum);
 		endfor
-		Rtrim = R;
-		Rtrim(1) = 0.69315;	# 5-Stellen Genauigkeit
+		# Lösungsvektor mit 5-Stelliger genauigkeit		
+		Rtrim(1) = 0.69315;		# r0 ist gleich ln2
+		for i = 1:N
+			sum = 0;
+			for j = 1:i
+				sum = sum + ((-1)^j)/j;
+			endfor
+			 Rtrim(i+1) = (-1)^i * (0.69315 + sum);
+		endfor
 		#
 		# Lösen des LGS
 		#
@@ -74,8 +81,7 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		printf ("\n")
 		#
 		# Berechnen des Taylorpolynoms
-		#
-		xval = [-0.5:0.01:1.5];
+		#		
 		taylor = zeros (1, size (xval, 2));
 		for i = 1:size (xval, 2)
 			for n = 0:taylorsize
