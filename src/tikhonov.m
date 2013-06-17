@@ -1,7 +1,6 @@
 clear all;
 clc;
-format long;
-N = 9;
+N = 7;
 xmin = 0;
 xmax =  1;
 xRange = [xmin:0.01:xmax];
@@ -9,50 +8,53 @@ xRange = [xmin:0.01:xmax];
 reference = zeros (1, N);
 for n = 1:size(xRange, 2)
 	reference(n) = 1/(1+xRange(n));
-endfor
+end;
 # Hilbert Matrix
 for i = 0:N-1
 	for j = 0:N-1
 		A(i+1, j+1) = 1/(1 + i + j);
-	endfor
-endfor
+	end;
+end;
 # Lösungsvektor
 b(1) = 0.69315;
 for i = 1:N-1
 	sum = 0;
 	for j = 1:i
 		sum = sum + ((-1)^j)/j;
-	endfor
+	end;
 	 b(i+1) = (-1)^i * (0.69315 + sum);
-endfor
+end;
 # Tikhonov 
 m = rows (A); n = columns (A);
-[U, S, V] = svd (A)
-V*S*U'
+[U, S, V] = svd (A);
 ## determine the regularization factor alpha
 alpha = 1/100;
 delta = log(2)-0.69315;
-p = 2;
+p = 1.01;
 do
 	F = 0;
 	alpha = alpha/p;
 	for index = 1:N
-		F = F + alpha^2/((alpha+(S(index,index))^2)^2)*(abs(dot(b,V(index))))^2;
-	endfor
-	F = F -delta^2
-	alpha
+		F = F + alpha^2/((alpha+(S(index,index))^2)^2)*(abs(dot(b,V(:,index))))^2;
+	end;
+	F = F -delta^2;
 until F < 0
-## transform to orthogonal basis
-b = U'*b';
-## Use the standard formula, replacing A with S.
-## S is diagonal, so the following will be very fast and accurate.
-x = (S'*S + alpha^2 * eye (n)) \ (S' * b);
-## transform to solution basis
-x = V*x;
+F
+alpha
+
+#
+sum=0;
+alpha=1e-10;
+for j=1:N
+  sum= sum.+S(j,j)/(alpha+S(j,j)^2)*dot(b,V(:,j))*U(:,j);
+end;
+x=sum
+
 # Plot
 figure;
 hold on;
-grid;
+#grid;
+#plot (xRange, polyval (x, xRange), "r")
+plot (xRange, polyval (x, xRange))
 plot (xRange, reference', "g")
-plot (xRange, polyval (x, xRange), "r")
 hold off;
