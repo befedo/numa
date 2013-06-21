@@ -3,10 +3,9 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 	
 	if (isnumeric (N) && is_valid_file_id (fileIdData) && is_valid_file_id (fileIdTask3))
 		N--;
-		taylorsize = 10;		# Länge des Taylor Polynoms
 		entwPkt = 0.5;			# und dessen Entwicklungspunkt
 		xmin = -0.5;
-		xmax =  1.5;
+		xmax =  2;
 		xval = [xmin:0.01:xmax];
 		ymin = 0;
 		ymax = 2;
@@ -75,7 +74,7 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		fdisp (fileIdTask3, commentLine);
 		fdisp (fileIdTask3, lambda');		# lambda ist transponiert, um besser lesbar in eine Datei zu schreiben
 		printf ("\nKondition:\n")
-		cond = cond (H);
+		cond = abs(max(lambda))/abs(min(lambda));
 		disp (cond)
 		commentLine = "#\n# Kondition\n#";
 		fdisp (fileIdTask3, commentLine);
@@ -83,10 +82,10 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		printf ("\n")
 		#
 		# Berechnen des Taylorpolynoms
-		#		
+		#
 		taylor = zeros (1, size (xval, 2));
 		for i = 1:size (xval, 2)
-			for n = 0:taylorsize
+			for n = 0:N+1
 				taylor(i) += (-1)^n * ( (xval(i)-entwPkt)^n / ((1+entwPkt)^(n+1)) );
 			endfor
 		endfor
