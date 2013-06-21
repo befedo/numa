@@ -24,10 +24,10 @@ for i = 1:N-1
 	end;
 	 b(i+1) = (-1)^i * (0.69315 + sum);
 end;
-# Tikhonov 
+# Singulärwertzerlegung
 m = rows (A); n = columns (A);
 [U, S, V] = svd (A);
-## determine the regularization factor alpha
+# Berechnung des Regularisierungsparameters alpha
 alpha = 1/100;
 delta = log(2)-0.69315;
 p = 1.01;
@@ -41,20 +41,17 @@ do
 until F < 0
 F
 alpha
-
-#
+# Thikonov decomposition mit neu gewähltem alpha
 sum=0;
 alpha=1e-10;
 for j=1:N
   sum= sum.+S(j,j)/(alpha+S(j,j)^2)*dot(b,V(:,j))*U(:,j);
 end;
 x=sum
-
 # Plot
 figure;
 hold on;
-#grid;
-#plot (xRange, polyval (x, xRange), "r")
-plot (xRange, polyval (x, xRange))
+grid;
+plot (xRange, polyval (x, xRange), "r")
 plot (xRange, reference', "g")
 hold off;

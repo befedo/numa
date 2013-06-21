@@ -5,17 +5,11 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		N--;
 		taylorsize = 10;		# Länge des Taylor Polynoms
 		entwPkt = 0.5;			# und dessen Entwicklungspunkt
-		xmin = 0;
-		xmax =  1;
+		xmin = -0.5;
+		xmax =  1.5;
 		xval = [xmin:0.01:xmax];
 		ymin = 0;
 		ymax = 2;
-		#
-		# Zähler und Nenner der gegebenen Funktion
-		#
-		numerator = [1];
-		denominator = [1, 1];
-		func = deconv (numerator, denominator);
 		#
 		# Erzeugen der Matrix
 		#
@@ -24,9 +18,7 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 				H(i+1, j+1) = 1/(1 + i + j);
 			endfor
 		endfor
-		#
 		# Anlegen des Lösungsvektors
-		#
 		R(1) = log(2);		# r0 ist gleich ln2
 		for i = 1:N
 			sum = 0;
@@ -36,7 +28,7 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 			 R(i+1) = (-1)^i * (log(2) + sum);
 		endfor
 		# Lösungsvektor mit 5-Stelliger genauigkeit		
-		Rtrim(1) = 0.69315;		# r0 ist gleich ln2
+		Rtrim(1) = 0.69315;
 		for i = 1:N
 			sum = 0;
 			for j = 1:i
@@ -47,32 +39,42 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		#
 		# Lösen des LGS
 		#
-		solved = H\R'
-		solvedTrim = gaussElim (H, Rtrim)
+		solved = H\R';
+		printf("--------------------------------------------------------------------------------\n");
+		printf("--                                 N = %2d                                     --\n", N+1);
+		printf("--------------------------------------------------------------------------------\n");
+		printf("Lösungsvector mit voller Genauigkeit :\n");
+		disp(solved')
+		#		
+		printf("\nLösungsvector mit 5 stelliger Genauigkeit :\n");		
+		solvedTrim = gaussElim (H, Rtrim);
+		disp(solvedTrim')
 		#
 		# Ausgabe
 		#
-		printf ("Matrix 'H' %ix%i:\n" ,N+1 ,N+1)
+		printf ("\nMatrix 'H' %ix%i:\n" ,N+1 ,N+1)
 		disp (H)
-		commentLine = strcat ("#\n# 'H' Matrix-",  num2str (N+1), "x",  num2str (N+1), "\n#");
+		commentLine = strcat ("#\n# 'H' Matrix-",  num2str (N+1), "x",  num2str (N+1), "\n\n#");
 		fdisp (fileIdData, commentLine);
 		fdisp (fileIdData, H);
-		printf ("zugehörige Lösungsvektoren 'r' und 'rTrim':\n")
+		printf ("\nzugehörige Lösungsvektoren 'r' und 'rTrim':\n")
+		format long;				# größeres Anzeigeformat
 		disp (R)
 		disp (Rtrim)
+		format short;				# normales Anzeigeformat
 		commentLine = "#\n# 'R' Lösungsvektor\n#";
 		fdisp (fileIdData, commentLine);
 		fdisp (fileIdData, R);
 		commentLine = "#\n# Lösung des LGS\n#";
 		fdisp (fileIdData, commentLine);
 		fdisp (fileIdData, solved');
-		printf ("Eigenwerte:\n")
+		printf ("\nEigenwerte:\n")
 		lambda = eig (H);
 		disp (lambda)
 		commentLine = strcat ("#\n# Eigenwerte der Matrizze 'H' -",  num2str (N+1), "x",  num2str (N+1), "\n#");
 		fdisp (fileIdTask3, commentLine);
 		fdisp (fileIdTask3, lambda');		# lambda ist transponiert, um besser lesbar in eine Datei zu schreiben
-		printf ("Kondition:\n")
+		printf ("\nKondition:\n")
 		cond = cond (H);
 		disp (cond)
 		commentLine = "#\n# Kondition\n#";
@@ -88,9 +90,6 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 				taylor(i) += (-1)^n * ( (xval(i)-entwPkt)^n / ((1+entwPkt)^(n+1)) );
 			endfor
 		endfor
-		#
-		# Plot des Polynoms
-		#		
 		solved = solved(end:-1:1);	# Potenzen umsortieren
 		solvedTrim = solvedTrim(end:-1:1);
 		# berechne die ursprüngliche Funktion
@@ -98,7 +97,13 @@ function retVal = numa (N, fileIdData, fileIdTask3)
 		for n = 1:size (xval, 2)
 			ref(n) = 1/(1+xval(n));
 		endfor
+		#
+		# Plot des Polynoms
+		#
+		printf("Zum Anzeigen des Plots Taste drücken...");
+		pause;
 		plotPdf (xval, ref, solvedTrim, taylor, xmin, xmax, ymin, ymax);	# Aufruf des externen Plot Scripts
+		printf("\nZum Fortfahren Taste drücken...");
 		#
 		# Return bool 'true'
 		#
