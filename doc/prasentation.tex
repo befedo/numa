@@ -1,0 +1,196 @@
+\documentclass{beamer}
+\usepackage[ngerman]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{tabularx}
+\usetheme{Luebeck}
+%\usetheme{Frankfurt}
+%\usetheme{CambridgeUS}
+
+\title{Schlecht konditioniertes LGS}
+
+\author[M. Hohlfeld\and M. Ludwig\and M. Springstein \and M. Bukovsky]
+  {Marvin Hohlfeld\and Marc Ludwig\and Matthias Springstein\and Matthias Bukovsky}
+
+\begin{document}
+
+  \begin{frame}
+    \titlepage
+  \end{frame}
+
+  \begin{frame}
+    \frametitle{Gliederung}\tableofcontents
+  \end{frame}
+
+  \section{Problemstellung}
+  \begin{frame}
+    Gegeben sei das folgende numerische Problem: \\[1em]
+    
+    Die gegebene Funktion 
+    \begin{equation}
+      f(x) = \frac{1}{1+x}
+    \end{equation}  
+    soll durch ein Polynom $p(x)$ vom Grad $n$ mit
+    \begin{equation}
+      p(x) = \sum_{k=0}^n a_k x^k
+    \end{equation}
+    möglichst gut nach der Fehlerquadratmethode approximiert werden.
+  \end{frame}
+  \begin{frame}
+    Zur Berechnung des Polynoms erhält man das LGS $Hx=R$ mit der Matrix \\
+    \begin{equation}
+    H := \left(\frac{1}{j+k+1}\right)_{j,k=0}^n
+    \end{equation}
+    und dem Lösungsvektor R definiert durch \\
+    \begin{equation}
+    r_j = (-1)^j \left\{ ln2 + \sum_{i=1}^j (-1)^i \frac{1}{i} \right\}, \text{für} j = 1,...,n
+    \end{equation}
+
+    Dieses LGS ist schlecht konditioniert! Dies bedeutet, dass kleine Fehler in der rechten Seite des LGS große Fehler in der Lösung verursachen können.
+    \\[1em]
+    Diese Problematik soll im Folgenden verdeutlicht werden.
+  \end{frame}
+  
+% -----------------------------------------------------------------------------------------------------
+%  Kapitel 
+% -----------------------------------------------------------------------------------------------------
+  \section{Entwicklung der Taylorreihe}
+  \subsection{Definition}
+  \begin{frame}
+    Um zum Vergleich die exakten Koeffizienten des Polynoms $p$ zu erhalten, wird $f(x)$ zunächst in eine Taylorreihe entwickelt. 
+    \\[1em]
+    Sei \( I \subset \mathrm{R} \) ein offenes Intervall, \( f \colon I \rightarrow \mathrm{R} \) eine
+    unendlich oft differenzierbare Funktion und \(a\) ein Element von \(I\). Dann heißt die unendliche
+    Reihe
+    \begin{align}
+            \label{eq:taylorreihe1}
+    P_f(x)  & = f(a) + \frac{f'(a)}{1!} (x-a) + \dotsb +
+                \frac{f^{(n)}(a)}{n!} (x-a)^n + \dotsb\\
+            \label{eq:taylorreihe2}
+            & = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!} (x-a)^n
+    \end{align}
+    die Taylor-Reihe von $f(x)$ mit Entwicklungsstelle $a$.
+  \end{frame}
+
+  \subsection{Entwicklung von $f(x)$ in eine Taylor Reihe}
+  \begin{frame}
+    Bei gegebener Funktion
+    \begin{equation*}
+        f\left(x\right) = \frac{1}{1+x}
+    \end{equation*}
+    und den Gleichungen \ref{eq:taylorreihe1} und \ref{eq:taylorreihe2} folgt für deren Ableitungen:
+    \begin{align}
+        f'\left(x\right)    &= -\frac{1}{\left(1+x\right)^2} \\
+        f''\left(x\right)   &=  \frac{2\left(1+x\right)}{\left(1+x\right)^4}
+                            =  \frac{2}{\left(1+x\right)^3} \\
+        f'''\left(x\right)  &=  \frac{2\left(1+x\right)^4 -8\left(1+x\right)\left(1+x\right)^3}
+                                {\left(1+x\right)^8}
+                            =  -\frac{6}{\left(1+x\right)^4}
+    \end{align}
+  \end{frame}
+  
+  \begin{frame}
+    Hieraus läßt sich folgende Bildungsvorschrifft für eine beliebige Ableitung bestimmen:
+    \begin{equation}
+        f^n\left(x\right) = \left(-1\right)^n \frac{n!}{\left(1+x\right)^{n+1}}
+    \end{equation}
+    hieraus folgt nach Gleichung \ref{eq:taylorreihe2}:
+    \begin{align}
+        f\left(x\right)  =  P_f\left(x\right) 
+                        &= \sum_{n=0}^{\infty} \left(-1\right)^n
+                            \frac{n!}{n!\left(1+a\right)^{n+1}}\left(x-a\right)^n\\
+                        &=  \sum_{n=0}^{\infty} \left(-1\right)^n
+                            \frac{\left(x-a\right)^n}{\left(1+a\right)^{n+1}}
+    \end{align}
+  \end{frame}
+    
+  \subsection{Taylorreihe für die Funktion $f$}
+  \begin{frame}
+    \centering    
+    \begin{table}[htbp]
+    \tiny   
+    \begin{tabularx}{\textwidth}{|c|X|X|X|X|X|X|X|X|X|X|X|}
+        \hline    
+        N & $\alpha_0$&$\alpha_1$&$\alpha_2$&$\alpha_3$&$\alpha_4$&$\alpha_5$&$\alpha_6$&$\alpha_7$&$\alpha_8$&$\alpha_9$\\\hline
+        3 & 0.962 & -0.740 & 0.296 &&&&&&& \\\hline
+        4 & 0.987 & -0.888 & 0.592 & -0.197 &&&&&& \\\hline
+        5 & 0.995 & -0.954 & 0.790 & -0.460 & 0.131 &&&&& \\\hline
+        6 & 0.998 & -0.982 & 0.899 & -0.680 & 0.351 & -0.087 &&&& \\\hline
+        7 & 0.999 & -0.993 & 0.954 & -0.826 & 0.570 & -0.263 & 0.058 &&& \\\hline
+        8 & 0.999 & -0.997 & 0.980 & -0.912 & 0.741 & -0.468 & 0.195 & -0.039 && \\\hline
+        9 & 0.999 & -0.999 & 0.991 & -0.957 & 0.855 & -0.650 & 0.377 & -0.143 & 0.026 & \\\hline
+        10& 0.999 & -0.999 & 0.996 & -0.980 & 0.923 & -0.786 & 0.559 & -0.299 & 0.104 & -0.017 \\\hline
+    \end{tabularx}
+    \caption{Eigenwerte \& Konditionen für 3..10xn Matrizen \label{tab:task3}}      
+    \end{table}
+  \end{frame}
+  
+% -----------------------------------------------------------------------------------------------------
+% Kapitel 
+% -----------------------------------------------------------------------------------------------------
+  \section{Nachweis der hermiteschen Form von $H$}
+  \subsection{Definition}
+  \begin{frame}
+    Im Folgendem soll gezeigt werden, dass die Matrix $H$ hermitesch ist, sodass gilt, dass die 
+    Kondition der Matrix $H$ gegeben ist durch
+    $cond(H)=\frac{|\alpha_{max}|}{|\alpha_{min}|}$ wobei $\alpha_{min}$ bzw. $\alpha_{max}$ 
+    den größten bzw. kleinsten Eigenwert von $H$ darstellt.
+    \\[1em]
+    Eine \(n \times n\)-Matrix \(A\) mit Einträgen in \(\mathrm{C}\) heißt hermitesch, wenn sie mit
+    ihrer (hermitesch) Adjungierten \(A^*\), also der transponierten und komplex konjugierten Matrix
+    übereinstimmt. Das heißt, wenn
+    \begin{equation}
+      \label{eq:hermitesch}
+        A = A^* = \overline A^{\mathrm T} = \overline{A^{\mathrm T}}
+    \end{equation}
+    gilt.
+    Für die Einträge einer hermiteschen Matrix gilt also:
+    \begin{equation}
+    \label{eq:elements}
+        a_{jk} = \overline{a_{kj}}
+    \end{equation}
+  \end{frame}
+  
+  \subsection{Mathematischer Beweis für die gegebene Matrix $H$}
+  \begin{frame}
+    Mit der gegebenen Bildungsvorschrifft
+    \begin{equation}
+        H := \left(\frac{1}{j+k+1}\right)_{j,k=0}^{n}
+    \end{equation}
+    Gleichung \ref{eq:elements} und \ref{eq:hermitesch} folgt, dass für \(H\) der
+    folgende Zusammenhang gillt:
+    \begin{align}
+                                          H &= H^{\mathrm T} &&| \text{ da rein reelwertig}      \\
+                                    H_{j,k} &= H_{k,j} &&| \text{ Indizees vertauschbar}         
+    \end{align}    
+    \begin{align}
+    \left(\frac{1}{j+k+1}\right)_{j,k=0}^{n} &= \left(\frac{1}{j+k+1}\right)_{k,j=0}^{n} &&
+    \end{align}
+    somit ist \(H\) symmetrisch und auch hermitesch.
+  \end{frame}
+  
+% -----------------------------------------------------------------------------------------------------
+% Kapitel 
+% -----------------------------------------------------------------------------------------------------
+  \section{Eigenwerte der Hilbertmatrix $H$}
+  \begin{frame}
+    Ermittelte Eigenwerte der Hilbertmatrix:
+    \centering    
+    \begin{table}[htbp]
+    \tiny   
+    \begin{tabularx}{\textwidth}{|c|X|X|X|X|X|X|X|X|X|X|X|}
+        \hline    
+        N & $\alpha_0$&$\alpha_1$&$\alpha_2$&$\alpha_3$&$\alpha_4$&$\alpha_5$&$\alpha_6$&$\alpha_7$&$\alpha_8$&$\alpha_9$& Kond.\\\hline
+        3 & 0.0027 & 0.12 & 1.41 &&&&&&&& 524.06\\\hline
+        4 & 9.67 e-05 & 6.73 e-03 & 1.69 e-01 & 1.50 e+00 &&&&&&& 1.55 e+04\\\hline
+        5 & 3.28 e-06 & 3.05 e-04 & 1.14 e-02 & 2.08 e-01 & 1.56 e+00 &&&&&& 4.76 e+05\\\hline
+        6 & 1.08 e-07 & 1.25 e-05 & 6.15 e-04 & 1.63 e-02 & 2.42 e-01 & 1.61 e+00 &&&&& 1.49 e+07\\\hline
+        7 & 3.49 e-09 & 4.85 e-07 & 2.93 e-05 & 1.00 e-03 & 2.12 e-02 & 2.71 e-01 & 1.66 e+00 &&&& 4.75 e+08\\\hline
+        8 & 1.11 e-10 & 1.79 e-08 & 1.29 e-06 & 5.43 e-05 & 1.46 e-03 & 2.62 e-02 & 2.98 e-01 & 1.69 e+00 &&& 1.52 e+10\\\hline
+        9 & 3.49 e-12 & 6.46 e-10 & 5.38 e-08 & 2.67 e-06 & 8.75 e-05 & 1.97 e-03 & 3.10 e-02 & 3.21 e-01 & 1.72 e+00 && 4.93 e+11\\\hline
+        10& 1.09 e-13 & 2.26 e-11 & 2.14 e-09 & 1.22 e-07 & 4.72 e-06 & 1.28 e-04 & 2.53 e-03 & 3.57 e-02 & 3.42 e-01 & 1.75 e+00 & 1.60 e+13\\\hline
+    \end{tabularx}
+    \caption{Eigenwerte \& Konditionen für 3..10xn Matrizen \label{tab:task3}}      
+    \end{table}
+  \end{frame}
+\end{document}
