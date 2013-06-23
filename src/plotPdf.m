@@ -3,13 +3,14 @@ function retVal = plotPdf (xval, ref, solvedTrim, taylor, xmin, xmax, ymin, ymax
 	if ( isvector (xval) && isvector (ref) && isvector (solvedTrim) && isvector (taylor) )
 		# settings
 		papersize = [21, 29.7]/2.54; # hier wird mit Zoll gerechnet
-		graph = figure (1, 'paperorientation', 'landscape', 'papersize', papersize, 'paperposition', [0.25 0.25, papersize-0.5]);	
+		graph = figure ('paperorientation', 'landscape', 'papersize', papersize, 'paperposition', [0.25 0.25, papersize-0.5]);	
 		hold on;	
 		axis ([xmin xmax ymin ymax]);
 		grid;
 		xlabel ('Naeherungen');
 		ylabel ('y');
-		title ('Taylorpolynom vs. LGS-Gauss');		
+		tbuff = sprintf("Taylorpolynom vs. LGS-Gauss mit N = %d", length(solvedTrim));
+		title (tbuff);		
 		# der eigentliche Plot
 		plot (xval, ref, "g")
 		plot (xval, polyval (solvedTrim, xval), "r")
