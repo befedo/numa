@@ -1,9 +1,11 @@
 \chapter{Numerische Lösung des LGS für eine fünfstellige Genauigkeit}
-Falls H eine \(n \times n\)-Matrix ist, wird von Octave Gaußelimination verwendet, sonst wird via
-QR-Zerlegung eine Lösung im Sinne der kleinsten Fehlerquadrate berechnet. Ist A schlecht
-konditioniert oder singulär, wird eine Warnung ausgegeben. Um zu zeigen, dass das
-Eliminationsverfahren nach Gauß ungeeignet ist haben wir hierführ eine eigene Funktion gechrieben,
-welche im Listing \ref{code:gauss} zu sehen ist.
+Falls H eine \(n \times n\)-Matrix ist, wird von Octave Gaußelimination \footnote{Johann Carl
+Friedrich Gauß (latinisiert Carolus Fridericus Gauss; * 30. April 1777 in Braunschweig; † 23.
+Februar 1855 in Göttingen) war ein deutscher Mathematiker, Astronom, Geodät und Physiker mit einem
+breit gefächerten Feld an Interessen.} verwendet, sonst wird via QR-Zerlegung eine Lösung im Sinne
+der kleinsten Fehlerquadrate berechnet. Ist A schlecht konditioniert oder singulär, wird eine
+Warnung ausgegeben. Um zu zeigen, dass das Eliminationsverfahren nach Gauß ungeeignet ist haben wir
+hierführ eine eigene Funktion gechrieben, welche im Listing \ref{code:gauss} zu sehen ist.
 
 \lstset{label=code:gauss, caption=Gauß-Eliminationsverfahren als Matlab-/Octavescript}
 \lstinputlisting{../src/gaussElim.m}
