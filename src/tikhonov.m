@@ -43,7 +43,7 @@ F
 alpha
 # Thikonov decomposition mit neu gewähltem alpha
 sum=0;
-alpha=1e-10;
+alpha=1e-10; # Parameter angepaßt, um Oszillationen zu reduzieren
 for j=1:N
   sum= sum.+S(j,j)/(alpha+S(j,j)^2)*dot(b,V(:,j))*U(:,j);
 end;
