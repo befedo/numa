@@ -47,7 +47,7 @@ alpha=1e-10;
 for j=1:N
   sum= sum.+S(j,j)/(alpha+S(j,j)^2)*dot(b,V(:,j))*U(:,j);
 end;
-x=sum
+x=flipud(sum)
 # Plot
 figure;
 hold on;
